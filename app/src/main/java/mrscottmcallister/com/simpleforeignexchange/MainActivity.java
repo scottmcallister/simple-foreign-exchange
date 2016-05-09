@@ -15,20 +15,22 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String url = "http://api.fixer.io/latest?base=usd";
+    private String url = "http://api.fixer.io/latest?base=";
+    private String base = "usd";
     private TextView text;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        queue = Volley.newRequestQueue(this);
 
         text = (TextView) findViewById(R.id.hello_text);
         JsonObjectRequest getExchangeRates = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                url + base,
                 null,
                 new Response.Listener<JSONObject>(){
                     @Override
@@ -45,4 +47,5 @@ public class MainActivity extends AppCompatActivity {
                 });
         queue.add(getExchangeRates);
     }
+
 }
