@@ -12,9 +12,9 @@ public class DbHandler extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "country.db";
     public static final String TABLE_COUNTRIES = "countries";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "_name";
-    public static final String COLUMN_CODE = "_code";
-    public static final String COLUMN_KEYWORDS = "_code";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_CODE = "code";
+    public static final String COLUMN_KEYWORDS = "keywords";
 
     public DbHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -62,8 +62,8 @@ public class DbHandler extends SQLiteOpenHelper{
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex("_name")) != null){
-                dbString += c.getString(c.getColumnIndex("_name"));
+            if(c.getString(c.getColumnIndex("name")) != null){
+                dbString += c.getString(c.getColumnIndex("name"));
                 dbString += "\n";
             }
             c.moveToNext();
