@@ -1,5 +1,6 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     private String url = "http://api.fixer.io/latest?base=";
@@ -25,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // get JSON data from API
         queue = Volley.newRequestQueue(this);
-
         text = (TextView) findViewById(R.id.hello_text);
         JsonObjectRequest getExchangeRates = new JsonObjectRequest(
                 Request.Method.GET,
@@ -46,6 +49,29 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         queue.add(getExchangeRates);
+
+        // Initialize DB with country info
+        DbHandler myDbHandler = new DbHandler(this, null, null, 1);
+        try {
+
+            myDbHandler.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHandler.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
+        }
+
     }
 
 }
