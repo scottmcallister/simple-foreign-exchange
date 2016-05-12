@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private String from = "USD";
     private String to = "CAD";
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
-    private TextView text;
+    private TextView textView;
+    private TextView dbTextView;
     private RequestQueue queue;
 
     @Override
@@ -33,21 +34,21 @@ public class MainActivity extends AppCompatActivity {
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
-        text = (TextView) findViewById(R.id.hello_text);
+        textView = (TextView) findViewById(R.id.hello_text);
         StringRequest getExchangeRates = new StringRequest(
                 Request.Method.GET,
                 url + "?from=" + from + "&val=1.0&to=" + to,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
-                        text.setText("Response: " + response);
+                        textView.setText("Response: " + response);
                     }
                 },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        text.setText("Error: " + error.getMessage());
+                        textView.setText("Error: " + error.getMessage());
                     }
                 }){
                 @Override
@@ -81,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
             throw sqle;
 
         }
+
+        String dbString = myDbHandler.dbToString();
+
+        dbTextView = (TextView) findViewById(R.id.db_text);
+        dbTextView.setText(dbString);
 
     }
 

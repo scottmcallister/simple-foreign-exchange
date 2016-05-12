@@ -14,4 +14,13 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:id="@+id/hello_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/db_text"
+        android:layout_below="@+id/hello_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
