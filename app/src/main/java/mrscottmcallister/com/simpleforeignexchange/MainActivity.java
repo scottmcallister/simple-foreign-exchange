@@ -3,7 +3,6 @@ package mrscottmcallister.com.simpleforeignexchange;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private SurfaceView right;
     private String selected = "left";
     private RequestQueue queue;
+    private DbHandler myDbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,33 +37,33 @@ public class MainActivity extends AppCompatActivity {
 
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
-        left.setOnTouchListener(new View.OnTouchListener() {
+        left.setOnClickListener(new View.OnClickListener(){
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    left.setBackgroundColor(0xFF0000FF);
-                    right.setBackgroundColor(0xFF5cc9ff);
-                    selected = "left";
-                    return true;
-                }
-                return false;
+            public void onClick(View v){
+                left.setBackgroundColor(0xFF0000FF);
+                right.setBackgroundColor(0xFF5cc9ff);
+                selected = "left";
             }
         });
-        right.setOnTouchListener(new View.OnTouchListener() {
+        right.setOnClickListener(new View.OnClickListener(){
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    right.setBackgroundColor(0xFF0000FF);
-                    left.setBackgroundColor(0xFF5cc9ff);
-                    selected = "right";
-                    return true;
-                }
-                return false;
+            public void onClick(View v){
+                right.setBackgroundColor(0xFF0000FF);
+                left.setBackgroundColor(0xFF5cc9ff);
+                selected = "right";
             }
         });
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
+        fetchData();
+
+        // Initialize DB with country info
+        initDb();
+
+    }
+
+    public void fetchData(){
         StringRequest getExchangeRates = new StringRequest(
                 Request.Method.GET,
                 url + "?from=" + from + "&val=1.0&to=" + to,
@@ -80,18 +80,19 @@ public class MainActivity extends AppCompatActivity {
                         //textView.setText("Error: " + error.getMessage());
                     }
                 }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("X-Mashape-Key", apiKey);
-                    headers.put("Accept", "text/plain");
-                    return headers;
-                }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Mashape-Key", apiKey);
+                headers.put("Accept", "text/plain");
+                return headers;
+            }
         };
         queue.add(getExchangeRates);
+    }
 
-        // Initialize DB with country info
-        DbHandler myDbHandler = new DbHandler(this, null, null, 1);
+    public void initDb(){
+        myDbHandler = new DbHandler(this, null, null, 1);
         try {
 
             myDbHandler.createDataBase();
@@ -111,12 +112,6 @@ public class MainActivity extends AppCompatActivity {
             throw sqle;
 
         }
-
-        String dbString = myDbHandler.dbToString();
-
-        //dbTextView = (TextView) findViewById(R.id.db_text);
-        //dbTextView.setText(dbString);
-
     }
 
 }
