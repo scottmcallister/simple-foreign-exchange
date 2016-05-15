@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private String selected = "left";
     private RequestQueue queue;
     private DbHandler myDbHandler;
+    private Calculator calculator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
