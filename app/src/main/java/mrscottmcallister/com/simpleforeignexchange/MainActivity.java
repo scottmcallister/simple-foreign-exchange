@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -15,6 +16,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private DbHandler myDbHandler;
     private Calculator calculator;
+    private TextView leftTotal;
+    private TextView rightTotal;
+    private double baseTotal;
+    private double altTotal;
+    private double rate;
+    private NumberFormat formatter = new DecimalFormat("#0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +47,20 @@ public class MainActivity extends AppCompatActivity {
 
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
+        altTotal = 0.5;
+        baseTotal = 1.0;
+        leftTotal = (TextView) findViewById(R.id.left_total);
+        rightTotal = (TextView) findViewById(R.id.right_total);
+        leftTotal.setText(formatter.format(baseTotal));
+        rightTotal.setText(formatter.format(altTotal));
         left.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 left.setBackgroundColor(0xFF0000FF);
                 right.setBackgroundColor(0xFF5cc9ff);
                 selected = "left";
+                leftTotal.setText(formatter.format(baseTotal));
+                rightTotal.setText(formatter.format(altTotal));
             }
         });
         right.setOnClickListener(new View.OnClickListener(){
@@ -52,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 right.setBackgroundColor(0xFF0000FF);
                 left.setBackgroundColor(0xFF5cc9ff);
                 selected = "right";
+                rightTotal.setText(formatter.format(baseTotal));
+                leftTotal.setText(formatter.format(altTotal));
             }
         });
 

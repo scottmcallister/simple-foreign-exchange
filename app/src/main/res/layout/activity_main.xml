@@ -13,19 +13,52 @@
         android:weightSum="2">
 
 
-        <SurfaceView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/left"
-            android:layout_weight="1"
-            android:background="#5cc9ff" />
+        <FrameLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <SurfaceView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/right"
-            android:layout_weight="1"
-            android:background="#5cc9ff" />
+            <SurfaceView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/left"
+                android:layout_weight="1"
+                android:background="#5cc9ff"
+                android:translationZ="1dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/left_total"
+                android:translationZ="2dp"
+                android:layout_gravity="center_horizontal|bottom" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <SurfaceView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/right"
+                android:layout_weight="1"
+                android:background="#5cc9ff"
+                android:translationZ="1dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/right_total"
+                android:layout_gravity="center_horizontal|bottom"
+                android:translationZ="2dp" />
+        </FrameLayout>
+
     </LinearLayout>
 
 
