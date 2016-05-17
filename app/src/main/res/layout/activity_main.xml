@@ -23,16 +23,17 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/left"
                 android:layout_weight="1"
-                android:background="#5cc9ff"
+                android:background="#00abff"
                 android:translationZ="1dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
                 android:id="@+id/left_total"
                 android:translationZ="2dp"
-                android:layout_gravity="center_horizontal|bottom" />
+                android:layout_gravity="center_horizontal|bottom"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="--" />
 
         </FrameLayout>
 
@@ -53,10 +54,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/right_total"
                 android:layout_gravity="center_horizontal|bottom"
-                android:translationZ="2dp" />
+                android:translationZ="2dp"
+                android:text="--" />
         </FrameLayout>
 
     </LinearLayout>

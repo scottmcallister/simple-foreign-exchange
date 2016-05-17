@@ -1,11 +1,13 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
+import android.app.Activity;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,7 +23,7 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private String url = "https://currency-exchange.p.mashape.com/exchange";
     private String from = "USD";
@@ -29,54 +31,52 @@ public class MainActivity extends AppCompatActivity {
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
     private SurfaceView left;
     private SurfaceView right;
-    private String selected = "left";
     private RequestQueue queue;
     private DbHandler myDbHandler;
     private Calculator calculator;
     private TextView leftTotal;
     private TextView rightTotal;
+    private String selected;
     private double baseTotal;
-    private double altTotal;
-    private double rate;
+    private Double rate;
+    private Double flippedRate;
     private NumberFormat formatter = new DecimalFormat("#0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
-        altTotal = 0.5;
         baseTotal = 1.0;
+        selected = "left";
+
+        // get JSON data from API
+        queue = Volley.newRequestQueue(this);
+        fetchData();
         leftTotal = (TextView) findViewById(R.id.left_total);
         rightTotal = (TextView) findViewById(R.id.right_total);
         leftTotal.setText(formatter.format(baseTotal));
-        rightTotal.setText(formatter.format(altTotal));
         left.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                left.setBackgroundColor(0xFF0000FF);
+                left.setBackgroundColor(0xFF00abff);
                 right.setBackgroundColor(0xFF5cc9ff);
-                selected = "left";
                 leftTotal.setText(formatter.format(baseTotal));
-                rightTotal.setText(formatter.format(altTotal));
+                rightTotal.setText(formatter.format(baseTotal * rate));
             }
         });
         right.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                right.setBackgroundColor(0xFF0000FF);
+                right.setBackgroundColor(0xFF00abff);
                 left.setBackgroundColor(0xFF5cc9ff);
-                selected = "right";
                 rightTotal.setText(formatter.format(baseTotal));
-                leftTotal.setText(formatter.format(altTotal));
+                leftTotal.setText(formatter.format(baseTotal * flippedRate));
             }
         });
-
-        // get JSON data from API
-        queue = Volley.newRequestQueue(this);
-        fetchData();
 
         // Initialize DB with country info
         initDb();
@@ -90,14 +90,22 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
-                        //textView.setText("Response: " + response);
+                        rate = Double.parseDouble(response);
+                        flippedRate = 1 / rate;
+                        if(selected == "left"){
+                            leftTotal.setText(formatter.format(baseTotal));
+                            rightTotal.setText(formatter.format(baseTotal * rate));
+                        }
+                        else{
+                            rightTotal.setText(formatter.format(baseTotal));
+                            leftTotal.setText(formatter.format(baseTotal * flippedRate));
+                        }
                     }
                 },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        //textView.setText("Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Could not fetch conversion rate", Toast.LENGTH_SHORT ).show();
                     }
                 }){
             @Override
