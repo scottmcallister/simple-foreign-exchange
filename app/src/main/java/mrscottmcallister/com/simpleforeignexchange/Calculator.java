@@ -4,40 +4,40 @@ package mrscottmcallister.com.simpleforeignexchange;
  * Created by scott on 16-05-15.
  */
 public class Calculator {
-    private double solution;
-    private static double x;
-    private static double y;
-    private char operator;
+    private Double solution;
+    private static Double x;
+    private static Double y;
+    private Character operator;
 
-    public double getSolution() {
+    public Double getSolution() {
         return solution;
     }
 
-    public void setSolution(double solution) {
+    public void setSolution(Double solution) {
         this.solution = solution;
     }
 
-    public static double getX() {
+    public static Double getX() {
         return x;
     }
 
-    public static void setX(double x) {
+    public static void setX(Double x) {
         Calculator.x = x;
     }
 
-    public static double getY() {
+    public static Double getY() {
         return y;
     }
 
-    public static void setY(double y) {
+    public static void setY(Double y) {
         Calculator.y = y;
     }
 
-    public char getOperator() {
+    public Character getOperator() {
         return operator;
     }
 
-    public void setOperator(char operator) {
+    public void setOperator(Character operator) {
         this.operator = operator;
     }
 
@@ -48,7 +48,7 @@ public class Calculator {
         operator = '+';
     }
 
-    public double calculate(){
+    public Double calculate(){
         switch(operator){
             case '+':
                 solution = x + y;
@@ -62,8 +62,20 @@ public class Calculator {
             case 'x':
                 solution = x * y;
                 break;
+            default:
+                if(x == null)
+                    x = 0.0;
+                solution = x;
+                break;
         }
         return solution;
+    }
+
+    public void clear(){
+        setOperator(null);
+        setSolution(null);
+        setY(null);
+        setX(null);
     }
 
 }
