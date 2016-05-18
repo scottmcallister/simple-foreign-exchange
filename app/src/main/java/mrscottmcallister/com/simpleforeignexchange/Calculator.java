@@ -74,8 +74,8 @@ public class Calculator {
     public void clear(){
         setOperator(null);
         setSolution(null);
-        setY(null);
-        setX(null);
+        setY(0.0);
+        setX(0.0);
     }
 
 }

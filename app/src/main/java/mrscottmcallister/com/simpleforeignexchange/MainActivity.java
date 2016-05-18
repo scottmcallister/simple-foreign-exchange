@@ -37,11 +37,14 @@ public class MainActivity extends Activity {
     private Calculator calculator;
     private TextView leftTotal;
     private TextView rightTotal;
+    private TextView rateText;
+    private TextView flippedText;
     private String selected;
     private Double baseTotal;
     private Double rate;
     private Double flippedRate;
     private NumberFormat formatter = new DecimalFormat("#0.00");
+    private NumberFormat baseFormat = new DecimalFormat("#0");
 
     private Button[] numberButtons;
     private Button clearBtn;
@@ -50,6 +53,8 @@ public class MainActivity extends Activity {
     private Button subBtn;
     private Button mulBtn;
     private Button divBtn;
+    private Button backBtn;
+    private Button dotBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +64,28 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
-        baseTotal = 1.0;
+        baseTotal = 0.0;
         selected = "left";
         calculator = new Calculator();
         numberButtons = new Button[10];
+        // set default rates
+        rate = 1.0;
+        flippedRate = 1.0;
+        rateText = (TextView) findViewById(R.id.rateText);
+        flippedText = (TextView) findViewById(R.id.flippedText);
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
         fetchData();
         leftTotal = (TextView) findViewById(R.id.left_total);
         rightTotal = (TextView) findViewById(R.id.right_total);
-        leftTotal.setText(formatter.format(baseTotal));
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 left.setBackgroundColor(0xFF00abff);
                 right.setBackgroundColor(0xFF5cc9ff);
-                leftTotal.setText(formatter.format(baseTotal));
-                rightTotal.setText(formatter.format(baseTotal * rate));
+                selected = "left";
+                updateTotals(baseTotal);
             }
         });
         right.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +93,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 right.setBackgroundColor(0xFF00abff);
                 left.setBackgroundColor(0xFF5cc9ff);
-                rightTotal.setText(formatter.format(baseTotal));
-                leftTotal.setText(formatter.format(baseTotal * flippedRate));
+                selected = "right";
+                updateTotals(baseTotal);
             }
         });
 
@@ -103,13 +112,10 @@ public class MainActivity extends Activity {
                     public void onResponse(String response) {
                         rate = Double.parseDouble(response);
                         flippedRate = 1 / rate;
-                        if (selected == "left") {
-                            leftTotal.setText(formatter.format(baseTotal));
-                            rightTotal.setText(formatter.format(baseTotal * rate));
-                        } else {
-                            rightTotal.setText(formatter.format(baseTotal));
-                            leftTotal.setText(formatter.format(baseTotal * flippedRate));
-                        }
+                        rateText.setText(formatter.format(rate));
+                        flippedText.setText(formatter.format(flippedRate));
+
+                        updateTotals(baseTotal);
                     }
                 },
                 new Response.ErrorListener() {
@@ -158,6 +164,12 @@ public class MainActivity extends Activity {
         mulBtn.setOnClickListener(new OperatorButtonListenter(new Character('x')));
         divBtn = (Button) findViewById(R.id.btnDivId);
         divBtn.setOnClickListener(new OperatorButtonListenter(new Character('/')));
+        backBtn = (Button) findViewById(R.id.btnBackId);
+        backBtn.setOnClickListener(new BackButtonListener());
+        dotBtn = (Button) findViewById(R.id.btnDotId);
+
+        // TO DO - implement decimal place logic
+        dotBtn.setOnClickListener(new BackButtonListener());
     }
 
     public void initDb() {
@@ -185,6 +197,11 @@ public class MainActivity extends Activity {
 
     public void updateTotals(Double givenTotal){
         baseTotal = givenTotal;
+        if(baseTotal == 0.0){
+            leftTotal.setText("");
+            rightTotal.setText("");
+            return;
+        }
         if(selected == "left"){
             leftTotal.setText(formatter.format(baseTotal));
             rightTotal.setText(formatter.format(baseTotal * rate));
@@ -238,6 +255,31 @@ public class MainActivity extends Activity {
         }
     }
 
+    public class BackButtonListener implements View.OnClickListener {
+        public BackButtonListener(){}
+
+        @Override
+        public void onClick(View v){
+            if (calculator.getOperator() == null) {
+                if(calculator.getSolution() != null){
+                    calculator.setSolution(null);
+                }
+                if(calculator.getX() == null)
+                    calculator.setX(0.0);
+                Double total = calculator.getX() % 10;
+                calculator.setX(total);
+                updateTotals(total);
+            }
+            else{
+                if(calculator.getY() == null)
+                    calculator.setY(0.0);
+                Double total = calculator.getY() % 10;
+                calculator.setY(total);
+                updateTotals(total);
+            }
+        }
+    }
+
     public class EqualButtonListener implements View.OnClickListener {
         public EqualButtonListener(){ }
 
@@ -254,7 +296,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v){
             calculator.clear();
-            updateTotals(null);
+            updateTotals(0.0);
         }
     }
 
