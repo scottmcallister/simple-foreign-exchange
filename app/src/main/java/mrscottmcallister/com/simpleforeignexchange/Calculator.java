@@ -42,10 +42,10 @@ public class Calculator {
     }
 
     public Calculator(){
-        solution = 0.0;
-        x = 0.0;
-        y = 0.0;
-        operator = '+';
+        solution = null;
+        x = null;
+        y = null;
+        operator = null;
     }
 
     public Double calculate(){

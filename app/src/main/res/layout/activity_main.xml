@@ -41,7 +41,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="USD"
                 android:id="@+id/textView"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:translationZ="2dp" />
 
         </FrameLayout>
 
@@ -73,7 +74,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="CAD"
                 android:id="@+id/textView2"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:translationZ="2dp" />
         </FrameLayout>
 
     </LinearLayout>
@@ -86,7 +88,29 @@
         android:layout_height="0px"
         android:layout_weight="1"
         android:layout_gravity="bottom"
-        android:weightSum="4">
+        android:weightSum="5">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:weightSum="2">
+            <Button
+                android:id="@+id/btnClearId"
+                android:text="C"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#5a5a5a"
+                android:textColor="#00fffb" />
+            <Button
+                android:id="@+id/btnBackId"
+                android:text="C"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#5a5a5a"
+                android:textColor="#00fffb" />
+
+        </TableRow>
         <TableRow android:layout_weight="1"
             android:layout_width="fill_parent"
             android:weightSum="4">
@@ -208,8 +232,8 @@
                 android:background="#5a5a5a"
                 android:textColor="#00fffb" />
             <Button
-                android:id="@+id/btnClearId"
-                android:text="C"
+                android:id="@+id/btnDotId"
+                android:text="."
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
@@ -232,6 +256,8 @@
                 android:background="#5a5a5a"
                 android:textColor="#00fffb" />
         </TableRow>
+
+
     </TableLayout>
 
 

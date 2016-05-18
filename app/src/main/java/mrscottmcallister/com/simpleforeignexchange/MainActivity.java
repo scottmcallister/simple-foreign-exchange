@@ -61,6 +61,8 @@ public class MainActivity extends Activity {
         right = (SurfaceView) findViewById(R.id.right);
         baseTotal = 1.0;
         selected = "left";
+        calculator = new Calculator();
+        numberButtons = new Button[10];
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
@@ -89,6 +91,7 @@ public class MainActivity extends Activity {
 
         // Initialize DB with country info
         initDb();
+        setUpButtons();
     }
 
     public void fetchData() {
@@ -137,7 +140,7 @@ public class MainActivity extends Activity {
         numberButtons[6] = (Button) findViewById(R.id.btnNum6Id);
         numberButtons[7] = (Button) findViewById(R.id.btnNum7Id);
         numberButtons[8] = (Button) findViewById(R.id.btnNum8Id);
-        numberButtons[0] = (Button) findViewById(R.id.btnNum9Id);
+        numberButtons[9] = (Button) findViewById(R.id.btnNum9Id);
 
         for(int i = 0; i < 10; i++){
             numberButtons[i].setOnClickListener(new NumberButtonListener(i));
@@ -205,11 +208,15 @@ public class MainActivity extends Activity {
                 if(calculator.getSolution() != null){
                     calculator.setSolution(null);
                 }
+                if(calculator.getX() == null)
+                    calculator.setX(0.0);
                 Double total = (calculator.getX() * 10) + myNum;
                 calculator.setX(total);
                 updateTotals(total);
             }
             else{
+                if(calculator.getY() == null)
+                    calculator.setY(0.0);
                 Double total = (calculator.getY() * 10) + myNum;
                 calculator.setY(total);
                 updateTotals(total);
