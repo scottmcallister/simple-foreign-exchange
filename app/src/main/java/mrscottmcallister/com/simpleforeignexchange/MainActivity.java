@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
     private Double flippedRate;
     private NumberFormat formatter = new DecimalFormat("#0.00");
     private NumberFormat baseFormat = new DecimalFormat("#0");
+    private boolean decimal;
 
     private Button[] numberButtons;
     private Button clearBtn;
@@ -114,7 +115,6 @@ public class MainActivity extends Activity {
                         flippedRate = 1 / rate;
                         rateText.setText(formatter.format(rate));
                         flippedText.setText(formatter.format(flippedRate));
-
                         updateTotals(baseTotal);
                     }
                 },
@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
         dotBtn = (Button) findViewById(R.id.btnDotId);
 
         // TO DO - implement decimal place logic
-        dotBtn.setOnClickListener(new BackButtonListener());
+        dotBtn.setOnClickListener(new DotButtonListener());
     }
 
     public void initDb() {
@@ -197,17 +197,24 @@ public class MainActivity extends Activity {
 
     public void updateTotals(Double givenTotal){
         baseTotal = givenTotal;
+        NumberFormat currentFormat;
+        if(decimal){
+            currentFormat = formatter;
+        }
+        else{
+            currentFormat = baseFormat;
+        }
         if(baseTotal == 0.0){
             leftTotal.setText("");
             rightTotal.setText("");
             return;
         }
         if(selected == "left"){
-            leftTotal.setText(formatter.format(baseTotal));
+            leftTotal.setText(currentFormat.format(baseTotal));
             rightTotal.setText(formatter.format(baseTotal * rate));
         }
         else{
-            rightTotal.setText(formatter.format(baseTotal));
+            rightTotal.setText(currentFormat.format(baseTotal));
             leftTotal.setText(formatter.format(baseTotal * flippedRate));
         }
     }
@@ -297,6 +304,20 @@ public class MainActivity extends Activity {
         public void onClick(View v){
             calculator.clear();
             updateTotals(0.0);
+        }
+    }
+
+    public class DotButtonListener implements View.OnClickListener {
+        public DotButtonListener(){ }
+
+        @Override
+        public void onClick(View v){
+            if(!decimal){
+                decimal = true;
+            }
+            else{
+                decimal = false;
+            }
         }
     }
 
