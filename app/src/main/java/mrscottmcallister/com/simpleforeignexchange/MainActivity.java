@@ -40,12 +40,11 @@ public class MainActivity extends Activity {
     private TextView rateText;
     private TextView flippedText;
     private String selected;
+    private String baseString;
     private Double baseTotal;
     private Double rate;
     private Double flippedRate;
     private NumberFormat formatter = new DecimalFormat("#0.00");
-    private NumberFormat baseFormat = new DecimalFormat("#0");
-    private boolean decimal;
 
     private Button[] numberButtons;
     private Button clearBtn;
@@ -72,9 +71,9 @@ public class MainActivity extends Activity {
         // set default rates
         rate = 1.0;
         flippedRate = 1.0;
+        baseString = "";
         rateText = (TextView) findViewById(R.id.rateText);
         flippedText = (TextView) findViewById(R.id.flippedText);
-        decimal = false;
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
@@ -87,7 +86,7 @@ public class MainActivity extends Activity {
                 left.setBackgroundColor(0xFF00abff);
                 right.setBackgroundColor(0xFF5cc9ff);
                 selected = "left";
-                updateTotals(baseTotal);
+                updateTotals(baseString);
             }
         });
         right.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +95,7 @@ public class MainActivity extends Activity {
                 right.setBackgroundColor(0xFF00abff);
                 left.setBackgroundColor(0xFF5cc9ff);
                 selected = "right";
-                updateTotals(baseTotal);
+                updateTotals(baseString);
             }
         });
 
@@ -116,7 +115,7 @@ public class MainActivity extends Activity {
                         flippedRate = 1 / rate;
                         rateText.setText(formatter.format(rate));
                         flippedText.setText(formatter.format(flippedRate));
-                        updateTotals(baseTotal);
+                        updateTotals(baseString);
                     }
                 },
                 new Response.ErrorListener() {
@@ -158,18 +157,16 @@ public class MainActivity extends Activity {
         equalBtn = (Button) findViewById(R.id.btnEqualId);
         equalBtn.setOnClickListener(new EqualButtonListener());
         addBtn = (Button) findViewById(R.id.btnAddId);
-        addBtn.setOnClickListener(new OperatorButtonListenter(new Character('+')));
+        addBtn.setOnClickListener(new OperatorButtonListener(new Character('+')));
         subBtn = (Button) findViewById(R.id.btnSubId);
-        subBtn.setOnClickListener(new OperatorButtonListenter(new Character('-')));
+        subBtn.setOnClickListener(new OperatorButtonListener(new Character('-')));
         mulBtn = (Button) findViewById(R.id.btnMulId);
-        mulBtn.setOnClickListener(new OperatorButtonListenter(new Character('x')));
+        mulBtn.setOnClickListener(new OperatorButtonListener(new Character('x')));
         divBtn = (Button) findViewById(R.id.btnDivId);
-        divBtn.setOnClickListener(new OperatorButtonListenter(new Character('/')));
+        divBtn.setOnClickListener(new OperatorButtonListener(new Character('/')));
         backBtn = (Button) findViewById(R.id.btnBackId);
         backBtn.setOnClickListener(new BackButtonListener());
         dotBtn = (Button) findViewById(R.id.btnDotId);
-
-        // TO DO - implement decimal place logic
         dotBtn.setOnClickListener(new DotButtonListener());
     }
 
@@ -190,26 +187,24 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void updateTotals(Double givenTotal){
-        baseTotal = givenTotal;
-        NumberFormat currentFormat;
-        if(decimal){
-            currentFormat = formatter;
+    public void updateTotals(String givenTotal){
+        if(givenTotal.equals("")){
+            baseTotal = 0.0;
+        } else{
+            baseTotal = Double.parseDouble(givenTotal);
         }
-        else{
-            currentFormat = baseFormat;
-        }
+        baseString = givenTotal;
         if(baseTotal == 0.0){
             leftTotal.setText("");
             rightTotal.setText("");
             return;
         }
         if(selected == "left"){
-            leftTotal.setText(currentFormat.format(baseTotal));
+            leftTotal.setText(baseString);
             rightTotal.setText(formatter.format(baseTotal * rate));
         }
         else{
-            rightTotal.setText(currentFormat.format(baseTotal));
+            rightTotal.setText(baseString);
             leftTotal.setText(formatter.format(baseTotal * flippedRate));
         }
     }
@@ -223,37 +218,37 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v) {
+            String totalString = baseString.toString() + myNum;
+            Double total = Double.parseDouble(totalString);
             if (calculator.getOperator() == null) {
                 if(calculator.getSolution() != null){
                     calculator.setSolution(null);
                 }
                 if(calculator.getX() == null)
                     calculator.setX(0.0);
-                Double total = (calculator.getX() * 10) + myNum;
                 calculator.setX(total);
-                updateTotals(total);
             }
             else{
-                if(calculator.getY() == null)
+                if(calculator.getY() == null){
                     calculator.setY(0.0);
-                Double total = (calculator.getY() * 10) + myNum;
+                    baseString = totalString = String.valueOf(myNum);
+                    total = 0.0;
+                }
                 calculator.setY(total);
-                updateTotals(total);
             }
+            updateTotals(totalString);
         }
     }
 
-    public class OperatorButtonListenter implements View.OnClickListener {
+    public class OperatorButtonListener implements View.OnClickListener {
         Character myOperator;
-        public OperatorButtonListenter(Character operator){
+        public OperatorButtonListener(Character operator){
             myOperator = operator;
         }
 
         @Override
         public void onClick(View v) {
-            if (calculator.getOperator() == null) {
-                calculator.setOperator(myOperator);
-            }
+            calculator.setOperator(myOperator);
         }
     }
 
@@ -262,24 +257,22 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v){
+            String newString = (baseString.equals("")) ? "" : baseString.substring(0, baseString.length()-1);
+            Double newTotal = (newString.equals("")) ? 0.0 : Double.parseDouble(newString);
             if (calculator.getOperator() == null) {
                 if(calculator.getSolution() != null){
                     calculator.setSolution(null);
                 }
                 if(calculator.getX() == null)
                     calculator.setX(0.0);
-                Double total = calculator.getX();
-                Double newTotal = (total - (total % 10))/10;
                 calculator.setX(newTotal);
-                updateTotals(newTotal);
             }
             else{
                 if(calculator.getY() == null)
                     calculator.setY(0.0);
-                Double total = calculator.getY();
-                Double newTotal = (total - (total % 10))/10;
-                updateTotals(newTotal);
+                calculator.setY(newTotal);
             }
+            updateTotals(newString);
         }
     }
 
@@ -289,7 +282,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v){
             calculator.calculate();
-            updateTotals(calculator.getSolution());
+            updateTotals(calculator.getSolution().toString());
         }
     }
 
@@ -299,7 +292,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v){
             calculator.clear();
-            updateTotals(0.0);
+            updateTotals("");
         }
     }
 
@@ -308,12 +301,8 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v){
-            if(!decimal){
-                decimal = true;
-            } else{
-                decimal = false;
-            }
-            updateTotals(baseTotal);
+            baseString = baseString + ".";
+            updateTotals(baseString);
         }
     }
 
