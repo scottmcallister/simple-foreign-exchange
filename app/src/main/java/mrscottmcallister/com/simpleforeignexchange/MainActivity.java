@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
         flippedRate = 1.0;
         rateText = (TextView) findViewById(R.id.rateText);
         flippedText = (TextView) findViewById(R.id.flippedText);
+        decimal = false;
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
@@ -175,19 +176,13 @@ public class MainActivity extends Activity {
     public void initDb() {
         myDbHandler = new DbHandler(this, null, null, 1);
         try {
-
             myDbHandler.createDataBase();
-
         } catch (IOException ioe) {
-
             throw new Error("Unable to create database");
-
         }
 
         try {
-
             myDbHandler.openDataBase();
-
         } catch (SQLException sqle) {
 
             throw sqle;
@@ -273,16 +268,17 @@ public class MainActivity extends Activity {
                 }
                 if(calculator.getX() == null)
                     calculator.setX(0.0);
-                Double total = calculator.getX() % 10;
-                calculator.setX(total);
-                updateTotals(total);
+                Double total = calculator.getX();
+                Double newTotal = (total - (total % 10))/10;
+                calculator.setX(newTotal);
+                updateTotals(newTotal);
             }
             else{
                 if(calculator.getY() == null)
                     calculator.setY(0.0);
-                Double total = calculator.getY() % 10;
-                calculator.setY(total);
-                updateTotals(total);
+                Double total = calculator.getY();
+                Double newTotal = (total - (total % 10))/10;
+                updateTotals(newTotal);
             }
         }
     }
@@ -314,10 +310,10 @@ public class MainActivity extends Activity {
         public void onClick(View v){
             if(!decimal){
                 decimal = true;
-            }
-            else{
+            } else{
                 decimal = false;
             }
+            updateTotals(baseTotal);
         }
     }
 
