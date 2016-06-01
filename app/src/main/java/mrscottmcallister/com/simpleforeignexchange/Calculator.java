@@ -1,5 +1,7 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
+import android.util.Log;
+
 /**
  * Created by scott on 16-05-15.
  */
@@ -38,6 +40,17 @@ public class Calculator {
     }
 
     public void setOperator(Character operator) {
+        Log.v("SetOperator", "x: "+x+"y: "+y+"operator: "+operator);
+        if(operator != null && y != null && x != null){
+            x = calculate();
+        }
+        if(solution != null){
+            x = solution;
+            solution = null;
+        }
+        if(x == null){
+            x = 0.0;
+        }
         this.operator = operator;
     }
 
@@ -49,6 +62,8 @@ public class Calculator {
     }
 
     public Double calculate(){
+        if(solution != null)
+            return solution;
         switch(operator){
             case '+':
                 solution = x + y;
@@ -68,14 +83,17 @@ public class Calculator {
                 solution = x;
                 break;
         }
+        x = null;
+        y = null;
+        operator = null;
         return solution;
     }
 
     public void clear(){
         setOperator(null);
         setSolution(null);
-        setY(0.0);
-        setX(0.0);
+        setY(null);
+        setX(null);
     }
 
 }

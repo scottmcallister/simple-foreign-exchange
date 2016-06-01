@@ -218,22 +218,26 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            String totalString = baseString.toString() + myNum;
-            Double total = Double.parseDouble(totalString);
+            String totalString;
             if (calculator.getOperator() == null) {
                 if(calculator.getSolution() != null){
                     calculator.setSolution(null);
                 }
-                if(calculator.getX() == null)
+                if(calculator.getX() == null) {
                     calculator.setX(0.0);
+                    baseString = "";
+                }
+                totalString = baseString.toString() + myNum;
+                Double total = Double.parseDouble(totalString);
                 calculator.setX(total);
             }
             else{
                 if(calculator.getY() == null){
                     calculator.setY(0.0);
-                    baseString = totalString = String.valueOf(myNum);
-                    total = 0.0;
+                    baseString = "";
                 }
+                totalString = baseString.toString() + myNum;
+                Double total = Double.parseDouble(totalString);
                 calculator.setY(total);
             }
             updateTotals(totalString);
