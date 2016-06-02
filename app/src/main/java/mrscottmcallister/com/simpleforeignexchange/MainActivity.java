@@ -1,6 +1,7 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.view.SurfaceView;
@@ -39,6 +40,8 @@ public class MainActivity extends Activity {
     private TextView rightTotal;
     private TextView rateText;
     private TextView flippedText;
+    private Button leftCurrency;
+    private Button rightCurrency;
     private String selected;
     private String baseString;
     private Double baseTotal;
@@ -133,6 +136,16 @@ public class MainActivity extends Activity {
             }
         };
         queue.add(getExchangeRates);
+    }
+
+    public void pickRightCurrency(View view){
+        Intent intent = new Intent(this, PickCurrency.class);
+        startActivity(intent);
+    }
+
+    public void pickLeftCurrency(View view){
+        Intent intent = new Intent(this, PickCurrency.class);
+        startActivity(intent);
     }
 
     public void setUpButtons(){
