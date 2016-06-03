@@ -169,4 +169,21 @@ public class DbHandler extends SQLiteOpenHelper{
         return dbString;
     }
 
+    public String[] dbToArray(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM "+TABLE_COUNTRIES+";";
+        Cursor c = db.rawQuery(query, null);
+        String[] results = new String[c.getCount()];
+        c.moveToFirst();
+        int i = 0;
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex("name")) != null){
+                results[i]= c.getString(c.getColumnIndex("name"));
+                i++;
+            }
+            c.moveToNext();
+        }
+        return results;
+    }
+
 }
