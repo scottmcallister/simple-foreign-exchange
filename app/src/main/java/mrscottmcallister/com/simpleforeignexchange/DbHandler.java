@@ -170,9 +170,10 @@ public class DbHandler extends SQLiteOpenHelper{
         return dbString;
     }
 
-    public ArrayList<String> dbToArray(){
+    public ArrayList<String> searchDb(String searchString){
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_COUNTRIES+" ORDER BY name ASC;";
+        String query;
+        query = "SELECT * FROM "+TABLE_COUNTRIES+" WHERE UPPER(keywords) LIKE UPPER('%"+searchString+"%') ORDER BY name ASC;";
         Cursor c = db.rawQuery(query, null);
         ArrayList<String> results = new ArrayList();
         c.moveToFirst();
@@ -186,5 +187,7 @@ public class DbHandler extends SQLiteOpenHelper{
         }
         return results;
     }
+
+
 
 }
