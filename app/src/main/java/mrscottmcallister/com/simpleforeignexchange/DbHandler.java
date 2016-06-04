@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class DbHandler extends SQLiteOpenHelper{
 
@@ -169,16 +170,16 @@ public class DbHandler extends SQLiteOpenHelper{
         return dbString;
     }
 
-    public String[] dbToArray(){
+    public ArrayList<String> dbToArray(){
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_COUNTRIES+";";
+        String query = "SELECT * FROM "+TABLE_COUNTRIES+" ORDER BY name ASC;";
         Cursor c = db.rawQuery(query, null);
-        String[] results = new String[c.getCount()];
+        ArrayList<String> results = new ArrayList();
         c.moveToFirst();
         int i = 0;
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("name")) != null){
-                results[i]= c.getString(c.getColumnIndex("name"));
+                results.add(i, c.getString(c.getColumnIndex("name")));
                 i++;
             }
             c.moveToNext();
