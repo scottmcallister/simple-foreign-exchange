@@ -1,13 +1,16 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,19 +19,32 @@ public class PickCurrency extends AppCompatActivity {
 
     private DbHandler myDbHandler;
     private EditText searchBar;
-    private ArrayList<String> searchResults;
-    private ArrayAdapter<String> searchResultsAdapter;
+    private ArrayList<Country> searchResults;
+    private CountryAdapter searchResultsAdapter;
     private ListView searchResultsView;
+    private String currencyToSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_currency);
+        currencyToSet = getIntent().getExtras().getString("currencyToSet");
+        Toast.makeText(getApplicationContext(),currencyToSet, Toast.LENGTH_LONG).show();
         initDb();
         searchResultsView = (ListView) findViewById(R.id.listView);
         searchResults = myDbHandler.searchDb("");
-        searchResultsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, searchResults);
+        searchResultsAdapter = new CountryAdapter(this, searchResults);
         searchResultsView.setAdapter(searchResultsAdapter);
+        searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent intent = new Intent(PickCurrency.this, MainActivity.class);
+                String code = searchResults.get(position).get_code();
+                intent.putExtra(currencyToSet, code);
+                startActivity(intent);
+            }
+        });
         searchBar = (EditText) findViewById(R.id.searchBar);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override

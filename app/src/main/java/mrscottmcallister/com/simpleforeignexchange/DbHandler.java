@@ -170,17 +170,18 @@ public class DbHandler extends SQLiteOpenHelper{
         return dbString;
     }
 
-    public ArrayList<String> searchDb(String searchString){
+    public ArrayList<Country> searchDb(String searchString){
         SQLiteDatabase db = getWritableDatabase();
         String query;
         query = "SELECT * FROM "+TABLE_COUNTRIES+" WHERE UPPER(keywords) LIKE UPPER('%"+searchString+"%') ORDER BY name ASC;";
         Cursor c = db.rawQuery(query, null);
-        ArrayList<String> results = new ArrayList();
+        ArrayList<Country> results = new ArrayList();
         c.moveToFirst();
         int i = 0;
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("name")) != null){
-                results.add(i, c.getString(c.getColumnIndex("name")));
+                Country currentCountry = new Country(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("code")), "");
+                results.add(i, currentCountry);
                 i++;
             }
             c.moveToNext();

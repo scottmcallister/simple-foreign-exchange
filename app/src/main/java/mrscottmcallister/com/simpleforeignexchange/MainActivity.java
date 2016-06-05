@@ -140,11 +140,13 @@ public class MainActivity extends Activity {
 
     public void pickRightCurrency(View view){
         Intent intent = new Intent(this, PickCurrency.class);
+        intent.putExtra("currencyToSet", "right");
         startActivity(intent);
     }
 
     public void pickLeftCurrency(View view){
         Intent intent = new Intent(this, PickCurrency.class);
+        intent.putExtra("currencyToSet", "left");
         startActivity(intent);
     }
 

@@ -7,11 +7,17 @@ public class Country {
     private int _id;
     private String _name;
     private String _code;
-    private String _keywords;
 
-    public Country(){
-
+    public String get_image() {
+        return _image;
     }
+
+    public void set_image(String _image) {
+        this._image = _image;
+    }
+
+    private String _keywords;
+    private String _image;
 
     public String get_keywords() {
         return _keywords;
@@ -21,9 +27,10 @@ public class Country {
         this._keywords = _keywords;
     }
 
-    public Country(String name, String code){
+    public Country(String name, String code, String image){
         _name = name;
         _code = code;
+        _image = image;
     }
 
     public int get_id() {
