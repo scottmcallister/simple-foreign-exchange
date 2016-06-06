@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
@@ -128,7 +127,6 @@ public class MainActivity extends Activity {
             leftSymbol.setText(newLeftSymbol);
             myDbHandler.setLeftSymbol(newLeftSymbol);
             rightSymbol.setText(myDbHandler.getRightSymbol());
-            Log.v("left symbol", newLeftSymbol);
             from = newLeft;
             to = myDbHandler.getRightCode();
         } else if(getIntent().getExtras().getString("right") != null){
@@ -137,7 +135,6 @@ public class MainActivity extends Activity {
             rightSymbol.setText(newRightSymbol);
             myDbHandler.setRightSymbol(newRightSymbol);
             leftSymbol.setText(myDbHandler.getLeftSymbol());
-            Log.v("left symbol", newRightSymbol);
             myDbHandler.setRightCode(newRight);
             from = myDbHandler.getLeftCode();
             to = newRight;
