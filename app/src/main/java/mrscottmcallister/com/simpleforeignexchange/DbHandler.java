@@ -20,10 +20,14 @@ public class DbHandler extends SQLiteOpenHelper{
     private static final String DATABASE_PATH = "/data/data/mrscottmcallister.com.simpleforeignexchange/databases/";
     private static final String DATABASE_NAME = "country.db";
     public static final String TABLE_COUNTRIES = "country";
+    public static final String TABLE_SELECTIONS = "selections";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_KEYWORDS = "keywords";
+    public static final String COLUMN_CONTENT = "content";
+    public static final String COLUMN_POSITION = "position";
+    public static final String COLUMN_SYMBOL = "currency_symbol";
     private SQLiteDatabase myDataBase;
     private Context myContext;
 
@@ -173,14 +177,14 @@ public class DbHandler extends SQLiteOpenHelper{
     public ArrayList<Country> searchDb(String searchString){
         SQLiteDatabase db = getWritableDatabase();
         String query;
-        query = "SELECT * FROM "+TABLE_COUNTRIES+" WHERE UPPER(keywords) LIKE UPPER('%"+searchString+"%') ORDER BY name ASC;";
+        query = "SELECT * FROM "+TABLE_COUNTRIES+" WHERE UPPER("+COLUMN_KEYWORDS+") LIKE UPPER('%"+searchString+"%') ORDER BY name ASC;";
         Cursor c = db.rawQuery(query, null);
         ArrayList<Country> results = new ArrayList();
         c.moveToFirst();
         int i = 0;
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("name")) != null){
-                Country currentCountry = new Country(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("code")), "");
+                Country currentCountry = new Country(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("code")), "", c.getString(c.getColumnIndex("symbol")));
                 results.add(i, currentCountry);
                 i++;
             }
@@ -189,6 +193,64 @@ public class DbHandler extends SQLiteOpenHelper{
         return results;
     }
 
+    public String getRightCode(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_CONTENT+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'right';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_CONTENT));
+        return code;
+    }
 
+    public String getLeftCode(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_CONTENT+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'left';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_CONTENT));
+        return code;
+    }
+
+    public void setRightCode(String newRight){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_CONTENT+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
+        db.rawQuery(query, null);
+    }
+
+    public void setLeftCode(String newLeft){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_CONTENT+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
+        db.rawQuery(query, null);
+    }
+
+    public String getRightSymbol(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_SYMBOL+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'right';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_SYMBOL));
+        return code;
+    }
+
+    public String getLeftSymbol(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_SYMBOL+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'left';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_SYMBOL));
+        return code;
+    }
+
+    public void setRightSymbol(String newRight){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_SYMBOL+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
+        db.rawQuery(query, null);
+    }
+
+    public void setLeftSymbol(String newLeft){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_SYMBOL+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
+        db.rawQuery(query, null);
+    }
 
 }

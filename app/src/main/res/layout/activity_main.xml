@@ -50,6 +50,14 @@
                 android:layout_gravity="center_horizontal|top"
                 android:onClick="pickLeftCurrency" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/left_symbol"
+                android:layout_gravity="left|bottom"
+                android:translationZ="3dp" />
+
         </FrameLayout>
 
         <FrameLayout
@@ -88,6 +96,14 @@
                 android:id="@+id/right_currency"
                 android:layout_gravity="center_horizontal|top"
                 android:onClick="pickRightCurrency" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/right_symbol"
+                android:layout_gravity="left|bottom"
+                android:translationZ="3dp" />
         </FrameLayout>
 
     </LinearLayout>

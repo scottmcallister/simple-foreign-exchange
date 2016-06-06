@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,8 +29,8 @@ import java.util.Map;
 public class MainActivity extends Activity {
 
     private String url = "https://currency-exchange.p.mashape.com/exchange";
-    private String from = "USD";
-    private String to = "CAD";
+    private String from;
+    private String to;
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
     private SurfaceView left;
     private SurfaceView right;
@@ -40,6 +41,8 @@ public class MainActivity extends Activity {
     private TextView rightTotal;
     private TextView rateText;
     private TextView flippedText;
+    private TextView leftSymbol;
+    private TextView rightSymbol;
     private Button leftCurrency;
     private Button rightCurrency;
     private String selected;
@@ -65,6 +68,10 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        initDb();
+        getCurrencies();
+
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
         baseTotal = 0.0;
@@ -101,10 +108,44 @@ public class MainActivity extends Activity {
                 updateTotals(baseString);
             }
         });
-
-        // Initialize DB with country info
-        initDb();
         setUpButtons();
+    }
+
+    public void getCurrencies(){
+        String newLeftSymbol;
+        String newRightSymbol;
+        leftSymbol = (TextView) findViewById(R.id.left_symbol);
+        rightSymbol = (TextView) findViewById(R.id.right_symbol);
+        if(getIntent().getExtras() == null){
+            from = myDbHandler.getLeftCode();
+            to = myDbHandler.getRightCode();
+            rightSymbol.setText(myDbHandler.getRightSymbol());
+            leftSymbol.setText(myDbHandler.getLeftSymbol());
+        } else if(getIntent().getExtras().getString("left") != null){
+            String newLeft = getIntent().getExtras().getString("left");
+            newLeftSymbol = getIntent().getExtras().getString("symbol");
+            myDbHandler.setLeftCode(newLeft);
+            leftSymbol.setText(newLeftSymbol);
+            myDbHandler.setLeftSymbol(newLeftSymbol);
+            rightSymbol.setText(myDbHandler.getRightSymbol());
+            Log.v("left symbol", newLeftSymbol);
+            from = newLeft;
+            to = myDbHandler.getRightCode();
+        } else if(getIntent().getExtras().getString("right") != null){
+            String newRight = getIntent().getExtras().getString("right");
+            newRightSymbol = getIntent().getExtras().getString("symbol");
+            rightSymbol.setText(newRightSymbol);
+            myDbHandler.setRightSymbol(newRightSymbol);
+            leftSymbol.setText(myDbHandler.getLeftSymbol());
+            Log.v("left symbol", newRightSymbol);
+            myDbHandler.setRightCode(newRight);
+            from = myDbHandler.getLeftCode();
+            to = newRight;
+        }
+        leftCurrency = (Button) findViewById(R.id.left_currency);
+        rightCurrency = (Button) findViewById(R.id.right_currency);
+        leftCurrency.setText(from);
+        rightCurrency.setText(to);
     }
 
     public void fetchData() {

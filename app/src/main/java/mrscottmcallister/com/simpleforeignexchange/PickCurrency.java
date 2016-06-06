@@ -41,7 +41,11 @@ public class PickCurrency extends AppCompatActivity {
                                     long id) {
                 Intent intent = new Intent(PickCurrency.this, MainActivity.class);
                 String code = searchResults.get(position).get_code();
-                intent.putExtra(currencyToSet, code);
+                String symbol = searchResults.get(position).get_symbol();
+                Bundle bundle = new Bundle();
+                bundle.putString(currencyToSet, code);
+                bundle.putString("symbol", symbol);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

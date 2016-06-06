@@ -7,6 +7,15 @@ public class Country {
     private int _id;
     private String _name;
     private String _code;
+    private String _symbol;
+
+    public String get_symbol() {
+        return _symbol;
+    }
+
+    public void set_symbol(String _symbol) {
+        this._symbol = _symbol;
+    }
 
     public String get_image() {
         return _image;
@@ -27,10 +36,11 @@ public class Country {
         this._keywords = _keywords;
     }
 
-    public Country(String name, String code, String image){
+    public Country(String name, String code, String image, String symbol){
         _name = name;
         _code = code;
         _image = image;
+        _symbol = symbol;
     }
 
     public int get_id() {
