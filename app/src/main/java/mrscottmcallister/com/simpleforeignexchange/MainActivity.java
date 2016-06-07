@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +32,8 @@ public class MainActivity extends Activity {
     private String from;
     private String to;
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
+    private SurfaceView leftBorder;
+    private SurfaceView rightBorder;
     private SurfaceView left;
     private SurfaceView right;
     private RequestQueue queue;
@@ -73,6 +76,8 @@ public class MainActivity extends Activity {
 
         left = (SurfaceView) findViewById(R.id.left);
         right = (SurfaceView) findViewById(R.id.right);
+        leftBorder = (SurfaceView) findViewById(R.id.border_left);
+        rightBorder = (SurfaceView) findViewById(R.id.border_right);
         baseTotal = 0.0;
         selected = "left";
         calculator = new Calculator();
@@ -92,8 +97,8 @@ public class MainActivity extends Activity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                left.setBackgroundColor(0xFF00abff);
-                right.setBackgroundColor(0xFF5cc9ff);
+                leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 selected = "left";
                 updateTotals(baseString);
             }
@@ -101,8 +106,8 @@ public class MainActivity extends Activity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                right.setBackgroundColor(0xFF00abff);
-                left.setBackgroundColor(0xFF5cc9ff);
+                rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 selected = "right";
                 updateTotals(baseString);
             }

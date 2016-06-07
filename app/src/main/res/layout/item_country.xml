@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/countryName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="false"
-        android:clickable="false"
-        android:focusable="false"
-        android:text="Name" />
-    <TextView
-        android:id="@+id/countryCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="false"
-        android:clickable="false"
-        android:focusable="false"
-        android:text="Code" />
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:background="@color/colorPrimaryDark">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="20dp"
+            android:id="@+id/flag"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:minHeight="20dp"
+            android:src="@drawable/ca"
+            android:maxHeight="20dp"
+            android:maxWidth="20dp"
+            android:layout_weight="1" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/countryName"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="Name"
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/countryCode"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="Code"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
 </LinearLayout>

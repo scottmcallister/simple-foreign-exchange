@@ -1,9 +1,9 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PickCurrency extends AppCompatActivity {
+public class PickCurrency extends Activity {
 
     private DbHandler myDbHandler;
     private EditText searchBar;

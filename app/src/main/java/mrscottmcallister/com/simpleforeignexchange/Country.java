@@ -8,6 +8,8 @@ public class Country {
     private String _name;
     private String _code;
     private String _symbol;
+    private String _keywords;
+    private String _image;
 
     public String get_symbol() {
         return _symbol;
@@ -25,8 +27,6 @@ public class Country {
         this._image = _image;
     }
 
-    private String _keywords;
-    private String _image;
 
     public String get_keywords() {
         return _keywords;

@@ -184,7 +184,7 @@ public class DbHandler extends SQLiteOpenHelper{
         int i = 0;
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("name")) != null){
-                Country currentCountry = new Country(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("code")), "", c.getString(c.getColumnIndex("symbol")));
+                Country currentCountry = new Country(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("code")), c.getString(c.getColumnIndex("flag")), c.getString(c.getColumnIndex("symbol")));
                 results.add(i, currentCountry);
                 i++;
             }
