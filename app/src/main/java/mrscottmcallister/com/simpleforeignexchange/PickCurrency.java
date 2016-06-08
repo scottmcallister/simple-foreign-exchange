@@ -42,9 +42,11 @@ public class PickCurrency extends Activity {
                 Intent intent = new Intent(PickCurrency.this, MainActivity.class);
                 String code = searchResults.get(position).get_code();
                 String symbol = searchResults.get(position).get_symbol();
+                String flag = searchResults.get(position).get_image();
                 Bundle bundle = new Bundle();
                 bundle.putString(currencyToSet, code);
                 bundle.putString("symbol", symbol);
+                bundle.putString("flag", flag);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

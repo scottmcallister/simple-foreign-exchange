@@ -28,6 +28,7 @@ public class DbHandler extends SQLiteOpenHelper{
     public static final String COLUMN_CONTENT = "content";
     public static final String COLUMN_POSITION = "position";
     public static final String COLUMN_SYMBOL = "currency_symbol";
+    public static final String COLUMN_FLAG = "flag";
     private SQLiteDatabase myDataBase;
     private Context myContext;
 
@@ -214,13 +215,13 @@ public class DbHandler extends SQLiteOpenHelper{
     public void setRightCode(String newRight){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_CONTENT+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
     public void setLeftCode(String newLeft){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_CONTENT+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
     public String getRightSymbol(){
@@ -250,6 +251,36 @@ public class DbHandler extends SQLiteOpenHelper{
     public void setLeftSymbol(String newLeft){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_SYMBOL+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
+        db.rawQuery(query, null);
+    }
+
+    public String getRightFlag(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_FLAG+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'right';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_FLAG));
+        return code;
+    }
+
+    public String getLeftFlag(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_FLAG+" FROM "+TABLE_SELECTIONS+" WHERE "+COLUMN_POSITION+" = 'left';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String code = c.getString(c.getColumnIndex(COLUMN_FLAG));
+        return code;
+    }
+
+    public void setRightFlag(String newRight){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_FLAG+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
+        db.rawQuery(query, null);
+    }
+
+    public void setLeftFlag(String newLeft){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_FLAG+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
         db.rawQuery(query, null);
     }
 

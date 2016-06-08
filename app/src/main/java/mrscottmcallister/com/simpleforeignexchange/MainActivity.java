@@ -1,6 +1,7 @@
 package mrscottmcallister.com.simpleforeignexchange;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,12 +49,15 @@ public class MainActivity extends Activity {
     private TextView rightSymbol;
     private Button leftCurrency;
     private Button rightCurrency;
+    private ImageButton flagLeft;
+    private ImageButton flagRight;
     private String selected;
     private String baseString;
     private Double baseTotal;
     private Double rate;
     private Double flippedRate;
     private NumberFormat formatter = new DecimalFormat("#0.00");
+    public ProgressDialog progress;
 
     private Button[] numberButtons;
     private Button clearBtn;
@@ -82,36 +87,25 @@ public class MainActivity extends Activity {
         selected = "left";
         calculator = new Calculator();
         numberButtons = new Button[10];
-        // set default rates
         rate = 1.0;
         flippedRate = 1.0;
         baseString = "";
         rateText = (TextView) findViewById(R.id.rateText);
         flippedText = (TextView) findViewById(R.id.flippedText);
+        progress = new ProgressDialog(this);
+        progress.setMessage("Fetching exchange rate");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
         fetchData();
         leftTotal = (TextView) findViewById(R.id.left_total);
         rightTotal = (TextView) findViewById(R.id.right_total);
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-                rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                selected = "left";
-                updateTotals(baseString);
-            }
-        });
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-                leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                selected = "right";
-                updateTotals(baseString);
-            }
-        });
+        left.setOnClickListener(new LeftClickListener());
+        right.setOnClickListener(new RightClickListener());
+        leftBorder.setOnClickListener(new LeftClickListener());
+        rightBorder.setOnClickListener(new RightClickListener());
         setUpButtons();
     }
 
@@ -120,29 +114,48 @@ public class MainActivity extends Activity {
         String newRightSymbol;
         leftSymbol = (TextView) findViewById(R.id.left_symbol);
         rightSymbol = (TextView) findViewById(R.id.right_symbol);
+        flagLeft = (ImageButton) findViewById(R.id.flag_left);
+        flagRight = (ImageButton) findViewById(R.id.flag_right);
         if(getIntent().getExtras() == null){
             from = myDbHandler.getLeftCode();
             to = myDbHandler.getRightCode();
             rightSymbol.setText(myDbHandler.getRightSymbol());
             leftSymbol.setText(myDbHandler.getLeftSymbol());
+            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getLeftFlag(), "drawable", getApplicationContext().getPackageName().toString()));
+            flagRight.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getRightFlag(), "drawable", getApplicationContext().getPackageName().toString()));
         } else if(getIntent().getExtras().getString("left") != null){
             String newLeft = getIntent().getExtras().getString("left");
             newLeftSymbol = getIntent().getExtras().getString("symbol");
+            String newFlag = getIntent().getExtras().getString("flag");
             myDbHandler.setLeftCode(newLeft);
+            myDbHandler.setLeftFlag(newFlag);
             leftSymbol.setText(newLeftSymbol);
             myDbHandler.setLeftSymbol(newLeftSymbol);
             rightSymbol.setText(myDbHandler.getRightSymbol());
             from = newLeft;
             to = myDbHandler.getRightCode();
+            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(newFlag, "drawable", getApplicationContext().getPackageName().toString()));
+            flagRight.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getRightFlag(), "drawable", getApplicationContext().getPackageName().toString()));
         } else if(getIntent().getExtras().getString("right") != null){
             String newRight = getIntent().getExtras().getString("right");
             newRightSymbol = getIntent().getExtras().getString("symbol");
+            String newFlag = getIntent().getExtras().getString("flag");
             rightSymbol.setText(newRightSymbol);
+            myDbHandler.setRightFlag(newFlag);
             myDbHandler.setRightSymbol(newRightSymbol);
             leftSymbol.setText(myDbHandler.getLeftSymbol());
             myDbHandler.setRightCode(newRight);
             from = myDbHandler.getLeftCode();
             to = newRight;
+            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getLeftFlag(), "drawable", getApplicationContext().getPackageName().toString()));
+            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(newFlag, "drawable", getApplicationContext().getPackageName().toString()));
+        } else{
+            from = myDbHandler.getLeftCode();
+            to = myDbHandler.getRightCode();
+            rightSymbol.setText(myDbHandler.getRightSymbol());
+            leftSymbol.setText(myDbHandler.getLeftSymbol());
+            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getLeftFlag(), "drawable", getApplicationContext().getPackageName().toString()));
+            flagRight.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getRightFlag(), "drawable", getApplicationContext().getPackageName().toString()));
         }
         leftCurrency = (Button) findViewById(R.id.left_currency);
         rightCurrency = (Button) findViewById(R.id.right_currency);
@@ -151,6 +164,7 @@ public class MainActivity extends Activity {
     }
 
     public void fetchData() {
+        progress.show();
         StringRequest getExchangeRates = new StringRequest(
                 Request.Method.GET,
                 url + "?from=" + from + "&val=1.0&to=" + to,
@@ -162,6 +176,7 @@ public class MainActivity extends Activity {
                         rateText.setText(formatter.format(rate));
                         flippedText.setText(formatter.format(flippedRate));
                         updateTotals(baseString);
+                        progress.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
@@ -264,6 +279,26 @@ public class MainActivity extends Activity {
         else{
             rightTotal.setText(baseString);
             leftTotal.setText(formatter.format(baseTotal * flippedRate));
+        }
+    }
+
+    public class RightClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            selected = "right";
+            updateTotals(baseString);
+        }
+    }
+
+    public class LeftClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            selected = "left";
+            updateTotals(baseString);
         }
     }
 

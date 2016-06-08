@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_gravity="top"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:weightSum="2">
 
 
@@ -21,34 +21,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/left_total"
-                android:translationZ="2dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/flippedText"
-                android:layout_gravity="center"
-                android:translationZ="2dp" />
+                android:layout_gravity="center_horizontal|bottom"
+                android:translationZ="2dp"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="USD"
                 android:id="@+id/left_currency"
-                android:layout_gravity="center_horizontal|top"
-                android:onClick="pickLeftCurrency" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/left_symbol"
-                android:layout_gravity="left|bottom"
-                android:translationZ="3dp" />
+                android:layout_gravity="center"
+                android:onClick="pickLeftCurrency"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent" />
 
             <SurfaceView
                 android:layout_width="fill_parent"
@@ -59,6 +46,19 @@
                 android:translationZ="1dp"
                 android:layout_gravity="right|bottom" />
 
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:id="@+id/flag_left"
+                android:layout_gravity="center_horizontal|top"
+                android:src="@drawable/us"
+                android:translationZ="3dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:padding="4dp"
+                android:onClick="pickLeftCurrency"
+                style="?android:attr/borderlessButtonStyle"/>
+
 
         </FrameLayout>
 
@@ -66,6 +66,13 @@
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
 
             <SurfaceView
                 android:layout_width="fill_parent"
@@ -79,33 +86,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/right_total"
-                android:layout_gravity="center_horizontal|bottom"
-                android:translationZ="2dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/rateText"
-                android:layout_gravity="center"
-                android:translationZ="2dp" />
+                android:layout_gravity="center_horizontal|bottom"
+                android:translationZ="2dp"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CAD"
                 android:id="@+id/right_currency"
-                android:layout_gravity="center_horizontal|top"
-                android:onClick="pickRightCurrency" />
+                android:layout_gravity="center"
+                android:onClick="pickRightCurrency"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/right_symbol"
-                android:layout_gravity="left|bottom"
-                android:translationZ="3dp" />
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:id="@+id/flag_right"
+                android:layout_gravity="center_horizontal|top"
+                android:src="@drawable/ca"
+                android:translationZ="3dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:padding="4dp"
+                android:onClick="pickRightCurrency"
+                style="?android:attr/borderlessButtonStyle"/>
 
         </FrameLayout>
 
@@ -116,22 +123,92 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:weightSum="2"
-        android:layout_weight="1">
+        android:layout_weight="3">
 
-        <SurfaceView
-            android:layout_width="0px"
-            android:layout_height="fill_parent"
-            android:id="@+id/border_left"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:translationZ="1dp" />
-
-        <SurfaceView
-            android:layout_width="0dp"
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/border_right"
-            android:background="@color/colorPrimary"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <SurfaceView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/border_left"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:translationZ="1dp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:translationZ="3dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/left_symbol"
+                    android:layout_gravity="center"
+                    android:translationZ="3dp"
+                    android:textColor="@android:color/white"
+                    android:layout_toLeftOf="@+id/left_total"	/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/left_total"
+                    android:translationZ="2dp"
+                    android:layout_gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <SurfaceView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/border_right"
+                android:background="@color/colorPrimary"
+                android:layout_weight="1"
+                android:translationZ="1dp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:translationZ="3dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/right_symbol"
+                    android:translationZ="3dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:layout_toLeftOf="@+id/right_total"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/right_total"
+                    android:layout_gravity="center"
+                    android:translationZ="2dp"
+                    android:textColor="@android:color/white"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <TableLayout
@@ -140,7 +217,9 @@
         android:layout_height="0px"
         android:layout_weight="9"
         android:layout_gravity="bottom"
-        android:weightSum="5">
+        android:weightSum="5"
+        android:divider="@color/background_material_dark"
+        android:background="@color/background_material_dark">
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="0px"
@@ -153,7 +232,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp" />
             <Button
                 android:id="@+id/btnBackId"
                 android:text="←"
@@ -161,7 +242,10 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
 
         </TableRow>
         <TableRow android:layout_weight="1"
@@ -174,7 +258,10 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp" />
             <Button
                 android:id="@+id/btnNum8Id"
                 android:text="8"
@@ -182,7 +269,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
             <Button
                 android:id="@+id/btnNum9Id"
                 android:text="9"
@@ -190,7 +279,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
             <Button
                 android:id="@+id/btnDivId"
                 android:text="/"
@@ -198,7 +289,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
         </TableRow>
         <TableRow android:layout_weight="1"
             android:layout_width="fill_parent"
@@ -210,7 +303,10 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp" />
             <Button
                 android:id="@+id/btnNum5Id"
                 android:text="5"
@@ -218,7 +314,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
             <Button
                 android:id="@+id/btnNum6Id"
                 android:text="6"
@@ -226,7 +324,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
             <Button
                 android:id="@+id/btnMulId"
                 android:text="*"
@@ -234,7 +334,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
         </TableRow>
         <TableRow android:layout_weight="1"
             android:layout_width="fill_parent"
@@ -246,7 +348,10 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp" />
             <Button
                 android:id="@+id/btnNum2Id"
                 android:text="2"
@@ -254,7 +359,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
             <Button
                 android:id="@+id/btnNum3Id"
                 android:text="3"
@@ -262,7 +369,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
             <Button
                 android:id="@+id/btnSubId"
                 android:text="-"
@@ -270,7 +379,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp" />
         </TableRow>
         <TableRow style="1"
             android:layout_width="fill_parent"
@@ -283,7 +394,10 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp" />
             <Button
                 android:id="@+id/btnDotId"
                 android:text="."
@@ -291,7 +405,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
             <Button
                 android:id="@+id/btnEqualId"
                 android:text="="
@@ -299,7 +415,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
             <Button
                 android:id="@+id/btnAddId"
                 android:text="+"
@@ -307,7 +425,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#5a5a5a"
-                android:textColor="#00fffb" />
+                android:textColor="#00fffb"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp" />
         </TableRow>
 
 
