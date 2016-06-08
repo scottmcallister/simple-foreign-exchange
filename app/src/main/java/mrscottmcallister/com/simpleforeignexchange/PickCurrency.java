@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class PickCurrency extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_currency);
         currencyToSet = getIntent().getExtras().getString("currencyToSet");
-        Toast.makeText(getApplicationContext(),currencyToSet, Toast.LENGTH_LONG).show();
         initDb();
         searchResultsView = (ListView) findViewById(R.id.listView);
         searchResults = myDbHandler.searchDb("");

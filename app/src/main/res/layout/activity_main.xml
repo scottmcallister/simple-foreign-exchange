@@ -16,16 +16,9 @@
         <FrameLayout
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/flippedText"
-                android:layout_gravity="center_horizontal|bottom"
-                android:translationZ="2dp"
-                android:textColor="@android:color/white" />
+            android:layout_weight="1"
+            android:paddingTop="20dp"
+            android:background="@color/colorPrimary">
 
             <Button
                 android:layout_width="wrap_content"
@@ -36,6 +29,16 @@
                 android:onClick="pickLeftCurrency"
                 android:background="@color/colorPrimaryDark"
                 android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/rateText"
+                android:layout_gravity="center_horizontal|bottom"
+                android:translationZ="2dp"
+                android:textColor="@android:color/white"
+                android:paddingBottom="15dp" />
 
             <SurfaceView
                 android:layout_width="fill_parent"
@@ -65,7 +68,9 @@
         <FrameLayout
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:paddingTop="20dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -86,10 +91,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/rateText"
+                android:id="@+id/flippedText"
                 android:layout_gravity="center_horizontal|bottom"
                 android:translationZ="2dp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:paddingBottom="15dp" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -162,7 +168,8 @@
                     android:layout_gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
-                    android:layout_centerInParent="true" />
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="5dp" />
             </RelativeLayout>
 
         </FrameLayout>
@@ -204,7 +211,8 @@
                     android:layout_gravity="center"
                     android:translationZ="2dp"
                     android:textColor="@android:color/white"
-                    android:layout_centerInParent="true" />
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="5dp" />
             </RelativeLayout>
 
         </FrameLayout>

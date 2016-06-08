@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -148,7 +147,7 @@ public class MainActivity extends Activity {
             from = myDbHandler.getLeftCode();
             to = newRight;
             flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getLeftFlag(), "drawable", getApplicationContext().getPackageName().toString()));
-            flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(newFlag, "drawable", getApplicationContext().getPackageName().toString()));
+            flagRight.setImageResource(getApplicationContext().getResources().getIdentifier(newFlag, "drawable", getApplicationContext().getPackageName().toString()));
         } else{
             from = myDbHandler.getLeftCode();
             to = myDbHandler.getRightCode();
@@ -182,7 +181,9 @@ public class MainActivity extends Activity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Could not fetch conversion rate", Toast.LENGTH_SHORT).show();
+                        // Go to error page
+                        Intent intent = new Intent(getApplicationContext(), ShowErrorActivity.class);
+                        startActivity(intent);
                     }
                 }) {
             @Override

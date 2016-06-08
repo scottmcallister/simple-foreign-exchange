@@ -245,13 +245,13 @@ public class DbHandler extends SQLiteOpenHelper{
     public void setRightSymbol(String newRight){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_SYMBOL+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
     public void setLeftSymbol(String newLeft){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_SYMBOL+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
     public String getRightFlag(){
@@ -275,13 +275,13 @@ public class DbHandler extends SQLiteOpenHelper{
     public void setRightFlag(String newRight){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_FLAG+"='"+newRight+"' WHERE "+COLUMN_POSITION+" = 'right'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
     public void setLeftFlag(String newLeft){
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE "+TABLE_SELECTIONS+" SET "+COLUMN_FLAG+"='"+newLeft+"' WHERE "+COLUMN_POSITION+" = 'left'";
-        db.rawQuery(query, null);
+        db.execSQL(query);
     }
 
 }

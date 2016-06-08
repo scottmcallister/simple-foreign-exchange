@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Simple Foreign Exchange</string>
+
+    <string name="title_activity_show_error">ShowErrorActivity</string>
+    <string name="try_again_button">Try Again</string>
+    <string name="oh_no">OH NO!</string>
 </resources>

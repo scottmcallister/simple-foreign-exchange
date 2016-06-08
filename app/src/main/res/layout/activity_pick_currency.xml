@@ -8,20 +8,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="mrscottmcallister.com.simpleforeignexchange.PickCurrency"
-    android:padding="0dp"
+    android:padding="5dp"
     android:background="@color/colorPrimaryDark">
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/searchBar"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/background_material_light"
+        android:background="#ffffff"
         android:textColor="@color/abc_background_cache_hint_selector_material_dark"
         android:padding="10px"
         android:textSize="15dp"
-        android:hint="Search..." />
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:hint="Search..."
+        android:drawableTint="@color/colorPrimary" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -30,7 +32,9 @@
         android:layout_below="@+id/searchBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:divider="@color/background_material_dark"
-        android:dividerHeight="1dp" />
+        android:divider="@color/button_material_dark"
+        android:dividerHeight="1dp"
+        android:fastScrollAlwaysVisible="false"
+        android:paddingTop="5dp" />
 
 </RelativeLayout>
