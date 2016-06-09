@@ -1,40 +1,97 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context="mrscottmcallister.com.simpleforeignexchange.ShowErrorActivity">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context="mrscottmcallister.com.simpleforeignexchange.ShowErrorActivity"
+    android:weightSum="6">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/oh_no"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:layout_weight="2"
+        android:weightSum="6">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/cloud" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="5"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0px"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/smiley"
+                    android:layout_weight="3" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/fullscreen_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:keepScreenOn="true"
+            android:text="@string/oh_no"
+            android:textColor="#86cde8"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_weight="2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/error_message"
+            android:id="@+id/textView"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="#86cde8"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:layout_weight="4">
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
             style="?metaButtonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
+            android:layout_gravity="center"
             android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            tools:ignore="UselessParent"
+            android:weightSum="2"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/dummy_button"
@@ -42,9 +99,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/try_again_button" />
+                android:text="@string/try_again_button"
+                android:layout_gravity="center"
+                android:background="@color/black_overlay" />
 
         </LinearLayout>
     </FrameLayout>
 
-</FrameLayout>
+</LinearLayout>

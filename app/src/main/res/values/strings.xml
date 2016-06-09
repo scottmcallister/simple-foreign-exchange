@@ -4,4 +4,5 @@
     <string name="title_activity_show_error">ShowErrorActivity</string>
     <string name="try_again_button">Try Again</string>
     <string name="oh_no">OH NO!</string>
+    <string name="error_message">We can\'t find this exchange rate. \n Are you connected?</string>
 </resources>
