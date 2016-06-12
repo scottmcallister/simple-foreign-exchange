@@ -20,25 +20,67 @@
             android:paddingTop="20dp"
             android:background="@color/colorPrimary">
 
-            <Button
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="USD"
-                android:id="@+id/left_currency"
-                android:layout_gravity="center"
-                android:onClick="pickLeftCurrency"
+                android:layout_gravity="center_horizontal|top"
+                android:translationZ="4dp"
                 android:background="@color/colorPrimaryDark"
-                android:textColor="@color/colorAccent" />
+                android:padding="10dp"
+                android:clickable="true"
+                android:onClick="pickLeftCurrency">
 
-            <TextView
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/flag_left"
+                    android:layout_gravity="center_horizontal|top"
+                    android:src="@drawable/us"
+                    android:translationZ="3dp"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:contentDescription="left flag"
+                    android:padding="4dp"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="USD"
+                    android:id="@+id/left_currency"
+                    android:textColor="@color/colorAccent"
+                    android:padding="10dp"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/rateText"
                 android:layout_gravity="center_horizontal|bottom"
-                android:translationZ="2dp"
-                android:textColor="@android:color/white"
-                android:paddingBottom="15dp" />
+                android:translationZ="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/rateText"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:translationZ="2dp"
+                    android:textColor="@android:color/white"
+                    android:paddingBottom="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/rateCurrency"
+                    android:paddingLeft="10dp"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
 
             <SurfaceView
                 android:layout_width="fill_parent"
@@ -48,19 +90,6 @@
                 android:background="@color/colorPrimary"
                 android:translationZ="1dp"
                 android:layout_gravity="right|bottom" />
-
-            <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="50dp"
-                android:id="@+id/flag_left"
-                android:layout_gravity="center_horizontal|top"
-                android:src="@drawable/us"
-                android:translationZ="3dp"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:padding="4dp"
-                android:onClick="pickLeftCurrency"
-                style="?android:attr/borderlessButtonStyle"/>
 
 
         </FrameLayout>
@@ -73,9 +102,38 @@
             android:paddingTop="20dp">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:translationZ="4dp"
+                android:background="@color/colorPrimaryDark"
+                android:padding="10dp"
+                android:clickable="true"
+                android:onClick="pickRightCurrency">
+
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/flag_right"
+                    android:layout_gravity="center_horizontal|top"
+                    android:src="@drawable/ca"
+                    android:translationZ="3dp"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:padding="4dp"
+                    android:onClick="pickRightCurrency"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="CAD"
+                    android:id="@+id/right_currency"
+                    android:textColor="@color/colorAccent"
+                    android:textAlignment="center"
+                    android:padding="10dp" />
 
             </LinearLayout>
 
@@ -83,42 +141,34 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/right"
-                android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:translationZ="1dp" />
 
-            <TextView
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/flippedText"
                 android:layout_gravity="center_horizontal|bottom"
-                android:translationZ="2dp"
-                android:textColor="@android:color/white"
-                android:paddingBottom="15dp" />
+                android:translationZ="2dp">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CAD"
-                android:id="@+id/right_currency"
-                android:layout_gravity="center"
-                android:onClick="pickRightCurrency"
-                android:background="@color/colorPrimaryDark"
-                android:textColor="@color/colorAccent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/flippedText"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:translationZ="2dp"
+                    android:textColor="@android:color/white"
+                    android:paddingBottom="15dp" />
 
-            <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="50dp"
-                android:id="@+id/flag_right"
-                android:layout_gravity="center_horizontal|top"
-                android:src="@drawable/ca"
-                android:translationZ="3dp"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:padding="4dp"
-                android:onClick="pickRightCurrency"
-                style="?android:attr/borderlessButtonStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/flippedCurrency"
+                    android:textColor="#ffffff"
+                    android:paddingLeft="10dp" />
+            </LinearLayout>
 
         </FrameLayout>
 

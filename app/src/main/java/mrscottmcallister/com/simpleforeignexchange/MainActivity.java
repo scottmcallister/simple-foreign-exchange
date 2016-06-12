@@ -10,7 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -35,8 +35,6 @@ public class MainActivity extends Activity {
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
     private SurfaceView leftBorder;
     private SurfaceView rightBorder;
-    private SurfaceView left;
-    private SurfaceView right;
     private RequestQueue queue;
     private DbHandler myDbHandler;
     private Calculator calculator;
@@ -46,10 +44,12 @@ public class MainActivity extends Activity {
     private TextView flippedText;
     private TextView leftSymbol;
     private TextView rightSymbol;
-    private Button leftCurrency;
-    private Button rightCurrency;
-    private ImageButton flagLeft;
-    private ImageButton flagRight;
+    private TextView leftCurrency;
+    private TextView rightCurrency;
+    private TextView rateCurrency;
+    private TextView flippedCurrency;
+    private ImageView flagLeft;
+    private ImageView flagRight;
     private String selected;
     private String baseString;
     private Double baseTotal;
@@ -78,8 +78,6 @@ public class MainActivity extends Activity {
         initDb();
         getCurrencies();
 
-        left = (SurfaceView) findViewById(R.id.left);
-        right = (SurfaceView) findViewById(R.id.right);
         leftBorder = (SurfaceView) findViewById(R.id.border_left);
         rightBorder = (SurfaceView) findViewById(R.id.border_right);
         baseTotal = 0.0;
@@ -98,11 +96,11 @@ public class MainActivity extends Activity {
 
         // get JSON data from API
         queue = Volley.newRequestQueue(this);
-        fetchData();
         leftTotal = (TextView) findViewById(R.id.left_total);
         rightTotal = (TextView) findViewById(R.id.right_total);
-        left.setOnClickListener(new LeftClickListener());
-        right.setOnClickListener(new RightClickListener());
+        fetchData();
+        findViewById(R.id.left).setOnClickListener(new LeftClickListener());
+        findViewById(R.id.right).setOnClickListener(new RightClickListener());
         leftBorder.setOnClickListener(new LeftClickListener());
         rightBorder.setOnClickListener(new RightClickListener());
         setUpButtons();
@@ -113,8 +111,10 @@ public class MainActivity extends Activity {
         String newRightSymbol;
         leftSymbol = (TextView) findViewById(R.id.left_symbol);
         rightSymbol = (TextView) findViewById(R.id.right_symbol);
-        flagLeft = (ImageButton) findViewById(R.id.flag_left);
-        flagRight = (ImageButton) findViewById(R.id.flag_right);
+        flagLeft = (ImageView) findViewById(R.id.flag_left);
+        flagRight = (ImageView) findViewById(R.id.flag_right);
+        rateCurrency = (TextView) findViewById(R.id.rateCurrency);
+        flippedCurrency = (TextView) findViewById(R.id.flippedCurrency);
         if(getIntent().getExtras() == null){
             from = myDbHandler.getLeftCode();
             to = myDbHandler.getRightCode();
@@ -156,45 +156,62 @@ public class MainActivity extends Activity {
             flagLeft.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getLeftFlag(), "drawable", getApplicationContext().getPackageName().toString()));
             flagRight.setImageResource(getApplicationContext().getResources().getIdentifier(myDbHandler.getRightFlag(), "drawable", getApplicationContext().getPackageName().toString()));
         }
-        leftCurrency = (Button) findViewById(R.id.left_currency);
-        rightCurrency = (Button) findViewById(R.id.right_currency);
+        leftCurrency = (TextView) findViewById(R.id.left_currency);
+        rightCurrency = (TextView) findViewById(R.id.right_currency);
         leftCurrency.setText(from);
         rightCurrency.setText(to);
+        rateCurrency.setText(to);
+        flippedCurrency.setText(from);
     }
 
     public void fetchData() {
-        progress.show();
-        StringRequest getExchangeRates = new StringRequest(
-                Request.Method.GET,
-                url + "?from=" + from + "&val=1.0&to=" + to,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        rate = Double.parseDouble(response);
-                        flippedRate = 1 / rate;
-                        rateText.setText(formatter.format(rate));
-                        flippedText.setText(formatter.format(flippedRate));
-                        updateTotals(baseString);
-                        progress.dismiss();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Go to error page
-                        Intent intent = new Intent(getApplicationContext(), ShowErrorActivity.class);
-                        startActivity(intent);
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-Mashape-Key", apiKey);
-                headers.put("Accept", "text/plain");
-                return headers;
-            }
-        };
-        queue.add(getExchangeRates);
+        if(getIntent().getExtras() != null ||
+               myDbHandler.getRate() == 0.0 ){
+            // fetch from API
+            progress.show();
+            StringRequest getExchangeRates = new StringRequest(
+                    Request.Method.GET,
+                    url + "?from=" + from + "&val=1.0&to=" + to,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            rate = Double.parseDouble(response);
+                            flippedRate = 1 / rate;
+                            myDbHandler.setRate(rate);
+                            myDbHandler.setFlippedRate(flippedRate);
+                            rateText.setText(formatter.format(rate));
+                            flippedText.setText(formatter.format(flippedRate));
+                            updateTotals(baseString);
+                            progress.dismiss();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Go to error page
+                            Intent intent = new Intent(getApplicationContext(), ShowErrorActivity.class);
+                            startActivity(intent);
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("X-Mashape-Key", apiKey);
+                    headers.put("Accept", "text/plain");
+                    return headers;
+                }
+            };
+            queue.add(getExchangeRates);
+        } else {
+            // fetch from DB
+            rate = myDbHandler.getRate();
+            flippedRate = myDbHandler.getFlippedRate();
+            rateText.setText(formatter.format(rate));
+            flippedText.setText(formatter.format(flippedRate));
+            updateTotals(baseString);
+            progress.dismiss();
+        }
+
     }
 
     public void pickRightCurrency(View view){
@@ -399,8 +416,10 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v){
-            baseString = baseString + ".";
-            updateTotals(baseString);
+            if(!baseString.contains(".")){
+                baseString = baseString + ".";
+                updateTotals(baseString);
+            }
         }
     }
 

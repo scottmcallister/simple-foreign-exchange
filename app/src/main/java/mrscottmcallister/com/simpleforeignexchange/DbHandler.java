@@ -21,7 +21,7 @@ public class DbHandler extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "country.db";
     public static final String TABLE_COUNTRIES = "country";
     public static final String TABLE_SELECTIONS = "selections";
-    public static final String COLUMN_ID = "_id";
+    public static final String TABLE_RATE = "rate";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_KEYWORDS = "keywords";
@@ -29,6 +29,7 @@ public class DbHandler extends SQLiteOpenHelper{
     public static final String COLUMN_POSITION = "position";
     public static final String COLUMN_SYMBOL = "currency_symbol";
     public static final String COLUMN_FLAG = "flag";
+    public static final String COLUMN_VALUE = "value";
     private SQLiteDatabase myDataBase;
     private Context myContext;
 
@@ -284,4 +285,33 @@ public class DbHandler extends SQLiteOpenHelper{
         db.execSQL(query);
     }
 
+    public Double getRate(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_VALUE+" FROM "+TABLE_RATE+" WHERE "+COLUMN_NAME+" = 'rate';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        Double rate = c.getDouble(c.getColumnIndex(COLUMN_VALUE));
+        return rate;
+    }
+
+    public Double getFlippedRate(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+COLUMN_VALUE+" FROM "+TABLE_RATE+" WHERE "+COLUMN_NAME+" = 'flipped';";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        Double flippedRate = c.getDouble(c.getColumnIndex(COLUMN_VALUE));
+        return flippedRate;
+    }
+
+    public void setRate(Double newRate){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_RATE+" SET "+COLUMN_VALUE+"='"+newRate+"' WHERE "+COLUMN_NAME+" = 'rate'";
+        db.execSQL(query);
+    }
+
+    public void setFlippedRate(Double newFlippedRate){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE "+TABLE_RATE+" SET "+COLUMN_VALUE+"='"+newFlippedRate+"' WHERE "+COLUMN_NAME+" = 'rate'";
+        db.execSQL(query);
+    }
 }
