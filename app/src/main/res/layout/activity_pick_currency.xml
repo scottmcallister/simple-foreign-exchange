@@ -35,6 +35,7 @@
         android:divider="@color/button_material_dark"
         android:dividerHeight="1dp"
         android:fastScrollAlwaysVisible="false"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:drawSelectorOnTop="false" />
 
 </RelativeLayout>

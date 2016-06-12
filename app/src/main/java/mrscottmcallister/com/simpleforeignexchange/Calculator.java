@@ -64,6 +64,14 @@ public class Calculator {
     public Double calculate(){
         if(solution != null)
             return solution;
+        if(operator == null){
+            solution = x;
+            if(solution == null){
+                return 0.0;
+            }
+            return solution;
+        }
+
         switch(operator){
             case '+':
                 solution = x + y;

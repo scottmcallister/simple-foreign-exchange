@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,8 +36,10 @@ public class MainActivity extends Activity {
     private String from;
     private String to;
     private String apiKey = "PLum3weAI4mshDYIvKhIyYvSuNSHp1EzY7fjsneJdFaHScp6zQ";
-    private SurfaceView leftBorder;
-    private SurfaceView rightBorder;
+    private FrameLayout leftBorder;
+    private FrameLayout rightBorder;
+    private SurfaceView leftSurfaceBorder;
+    private SurfaceView rightSurfaceBorder;
     private RequestQueue queue;
     private DbHandler myDbHandler;
     private Calculator calculator;
@@ -78,8 +83,8 @@ public class MainActivity extends Activity {
         initDb();
         getCurrencies();
 
-        leftBorder = (SurfaceView) findViewById(R.id.border_left);
-        rightBorder = (SurfaceView) findViewById(R.id.border_right);
+        leftBorder = (FrameLayout) findViewById(R.id.border_left);
+        rightBorder = (FrameLayout) findViewById(R.id.border_right);
         baseTotal = 0.0;
         selected = "left";
         calculator = new Calculator();
@@ -101,8 +106,17 @@ public class MainActivity extends Activity {
         fetchData();
         findViewById(R.id.left).setOnClickListener(new LeftClickListener());
         findViewById(R.id.right).setOnClickListener(new RightClickListener());
-        leftBorder.setOnClickListener(new LeftClickListener());
-        rightBorder.setOnClickListener(new RightClickListener());
+
+        // make surface views transparent
+        rightSurfaceBorder = (SurfaceView) findViewById(R.id.border_surface_right);
+        rightSurfaceBorder.setZOrderOnTop(true);
+        SurfaceHolder rightSurfaceHolder = rightSurfaceBorder.getHolder();
+        rightSurfaceHolder.setFormat(PixelFormat.TRANSPARENT);
+        leftSurfaceBorder = (SurfaceView) findViewById(R.id.border_surface_left);
+        leftSurfaceBorder.setZOrderOnTop(true);
+        SurfaceHolder leftSurfaceHolder = rightSurfaceBorder.getHolder();
+        leftSurfaceHolder.setFormat(PixelFormat.TRANSPARENT);
+
         setUpButtons();
     }
 
@@ -285,7 +299,7 @@ public class MainActivity extends Activity {
             baseTotal = Double.parseDouble(givenTotal);
         }
         baseString = givenTotal;
-        if(baseTotal == 0.0){
+        if(baseTotal == 0.0 && givenTotal.length() == 0){
             leftTotal.setText("");
             rightTotal.setText("");
             return;
@@ -300,23 +314,31 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void selectRight(View v){
+        rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+        selected = "right";
+        updateTotals(baseString);
+    }
+
     public class RightClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-            leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            selected = "right";
-            updateTotals(baseString);
+            selectRight(v);
         }
+    }
+
+    public void selectLeft(View v){
+        leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+        selected = "left";
+        updateTotals(baseString);
     }
 
     public class LeftClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            leftBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-            rightBorder.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            selected = "left";
-            updateTotals(baseString);
+            selectLeft(v);
         }
     }
 
@@ -396,8 +418,10 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v){
-            calculator.calculate();
-            updateTotals(calculator.getSolution().toString());
+            if(baseString.length() > 0){
+                calculator.calculate();
+                updateTotals(calculator.getSolution().toString());
+            }
         }
     }
 
@@ -416,7 +440,10 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v){
-            if(!baseString.contains(".")){
+            if(baseString.length() == 0){
+                baseString = "0.";
+                updateTotals(baseString);
+            } else if(!baseString.contains(".")){
                 baseString = baseString + ".";
                 updateTotals(baseString);
             }
