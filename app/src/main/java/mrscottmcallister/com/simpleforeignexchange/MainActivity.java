@@ -202,6 +202,7 @@ public class MainActivity extends Activity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+
                             // Go to error page
                             Intent intent = new Intent(getApplicationContext(), ShowErrorActivity.class);
                             startActivity(intent);
@@ -219,9 +220,9 @@ public class MainActivity extends Activity {
         } else {
             // fetch from DB
             rate = myDbHandler.getRate();
-            flippedRate = myDbHandler.getFlippedRate();
+            flippedRate = 1 / rate;
             rateText.setText(formatter.format(rate));
-            flippedText.setText(formatter.format(flippedRate));
+            flippedText.setText(formatter.format(1 / rate));
             updateTotals(baseString);
             progress.dismiss();
         }
